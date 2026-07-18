@@ -1,10 +1,10 @@
-# 🛡️ takedown.email
+# 🛡️ takedow.email
 
-![takedown.email Screenshot](./screenshot.png)
+![takedow.email Screenshot](./screenshot.png)
 
-> **⚠️ ÖNEMLİ BİLGİLENDİRME:** takedown.email projesi 03 Eylül 2026 (2026-09-03) tarihi itibariyle sonlandırılacak ve fişi çekilecektir. Proje, topluluğa katkı ve eğitim amacıyla açık kaynak olarak GitHub'da paylaşılmıştır.
+> **⚠️ ÖNEMLİ BİLGİLENDİRME:** takedow.email projesi 03 Eylül 2026 (2026-09-03) tarihi itibariyle sonlandırılacak ve fişi çekilecektir. Proje, topluluğa katkı ve eğitim amacıyla açık kaynak olarak GitHub'da paylaşılmıştır.
 
-> **⚠️ IMPORTANT NOTICE:** The takedown.email project will be discontinued and shut down as of September 3, 2026 (2026-09-03). The project has been shared on GitHub as open source for the purpose of contributing to the community and providing educational resources.
+> **⚠️ IMPORTANT NOTICE:** The takedow.email project will be discontinued and shut down as of September 3, 2026 (2026-09-03). The project has been shared on GitHub as open source for the purpose of contributing to the community and providing educational resources.
 
 TR:
 Phishing domainleri için abuse contact bilgilerini bulan ve otomatik rapor gönderme sistemi.
@@ -29,7 +29,7 @@ A system that identifies abuse contact information for phishing domains and auto
 ```bash
 # Projeyi klonlayın
 git clone <repo-url>
-cd takedown.email
+cd takedow.email
 
 # Docker ile çalıştırın (eğer Flask-WTF dependency sorunu varsa)
 ./docker-fix.sh
@@ -66,7 +66,7 @@ docker-compose --profile production up -d
 1. **Projeyi klonlayın:**
    ```bash
    git clone <repo-url>
-   cd takedown.email
+   cd takedow.email
    ```
 
 2. **Virtual environment oluşturun:**
@@ -231,7 +231,7 @@ docker logs -f takedown-email-app
 
 ### Dosya Yapısı
 ```
-takedown.email/
+takedow.email/
 ├── app.py                 # Ana Flask uygulaması
 ├── requirements.txt       # Python bağımlılıkları
 ├── takedown_logs.db      # SQLite veritabanı (otomatik oluşur)
