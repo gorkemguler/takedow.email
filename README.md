@@ -5,9 +5,9 @@
 > **⚠️ ÖNEMLİ BİLGİLENDİRME:** takedown.email projesi 03 Eylül 2026 (2026-09-03) tarihi itibariyle sonlandırılacak ve fişi çekilecektir. Proje, topluluğa katkı ve eğitim amacıyla açık kaynak olarak GitHub'da paylaşılmıştır.
 
 > **⚠️ IMPORTANT NOTICE:** The takedown.email project will be discontinued and shut down as of September 3, 2026 (2026-09-03). The project has been shared on GitHub as open source for the purpose of contributing to the community and providing educational resources.
+
 TR:
 Phishing domainleri için abuse contact bilgilerini bulan ve otomatik rapor gönderme sistemi.
-> 
 EN:
 A system that identifies abuse contact information for phishing domains and automatically submits reports.
 
