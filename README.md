@@ -8,6 +8,7 @@
 
 TR:
 Phishing domainleri için abuse contact bilgilerini bulan ve otomatik rapor gönderme sistemi.
+
 EN:
 A system that identifies abuse contact information for phishing domains and automatically submits reports.
 
