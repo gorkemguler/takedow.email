@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ get_text('title') }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-link:hover {
+            transform: translateY(-1px);
+        }
+        
+        .logo-link:hover .logo {
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+        
+        .logo-link:hover .brand-text {
+            color: #93c5fd;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .brand-text {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .lang-btn.active,
+        .lang-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Search section */
+        .search-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            margin-bottom: 3rem;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .domain-input {
+            flex: 1;
+            padding: 1.25rem 1.5rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            color: #e2e8f0;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .domain-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        .domain-input::placeholder {
+            color: #64748b;
+        }
+        
+        .search-btn {
+            padding: 1.25rem 2rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+        }
+        
+        .search-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Status indicators */
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+            color: #60a5fa;
+        }
+        
+        .loading i {
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .error {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            margin-top: 1rem;
+        }
+        
+        /* Results section */
+        .results {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .result-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .result-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+        }
+        
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .domain-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-item {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .info-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 0.25rem;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+        
+        .abuse-emails h3 {
+            color: #60a5fa;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .abuse-info {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .email-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .email-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .email-item:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(15, 23, 42, 0.9);
+        }
+        
+        .email-address {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+        
+        .email-btn {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .email-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .bulk-report {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .bulk-report h4 {
+            color: #60a5fa;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .bulk-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .bulk-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(59, 130, 246, 0.2);
+            color: #64748b;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .logo-section {
+                justify-content: flex-start;
+                flex: 1;
+            }
+            
+            .language-selector {
+                justify-content: flex-end;
+                flex: 0;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .hero-title {
+                font-size: 1.75rem;
+                text-align: center;
+                margin-bottom: 0.75rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem;
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-section {
+                padding: 1.5rem 0;
+                margin-bottom: 1rem;
+            }
+            
+            .container {
+                padding: 0 0.75rem;
+                margin: 1.5rem auto;
+            }
+            
+            .search-card {
+                padding: 1.5rem;
+                margin: 0 -0.5rem;
+                border-radius: 15px;
+            }
+            
+            .domain-input {
+                padding: 1rem;
+                font-size: 16px;
+            }
+            
+            .search-btn {
+                padding: 1rem;
+                font-size: 16px;
+            }
+            
+            .brand-text {
+                font-size: 22px;
+            }
+            
+            .logo {
+                width: 42px;
+                height: 42px;
+            }
+            
+            .lang-btn {
+                padding: 0.5rem 0.75rem !important;
+                font-size: 0.8rem !important;
+                min-width: 35px;
+            }
+            
+            .domain-info {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .info-item {
+                padding: 0.75rem;
+            }
+            
+            .email-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+            
+            .email-address {
+                font-size: 13px;
+                word-break: break-all;
+            }
+            
+            .info-section {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 0.75rem;
+                margin-top: 1rem;
+                padding: 0 0.5rem;
+            }
+            
+            .info-card, .contact-card {
+                padding: 0.75rem;
+                margin: 0;
+                border-radius: 8px;
+            }
+            
+            .info-header, .contact-header {
+                margin-bottom: 0.75rem;
+            }
+            
+            .info-header h3, .contact-header h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .info-content p, .contact-content p {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.4;
+            }
+            
+            .features-grid {
+                gap: 0.5rem;
+            }
+            
+            .feature-item {
+                padding: 0.5rem;
+                flex-direction: row;
+                text-align: left;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+            
+            .feature-item i {
+                margin-top: 0.1rem;
+                font-size: 1rem;
+                flex-shrink: 0;
+                min-width: 18px;
+            }
+            
+            .feature-item h4 {
+                font-size: 0.9rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .feature-item p {
+                font-size: 0.8rem;
+                line-height: 1.3;
+            }
+            
+            .contact-info {
+                padding: 0.5rem 0.75rem;
+                margin: 0;
+                border-radius: 6px;
+            }
+            
+            .contact-info a {
+                font-size: 0.9rem;
+                word-break: break-all;
+            }
+            
+            .result-card {
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+            }
+            
+            .bulk-report {
+                padding: 1rem;
+            }
+            
+            .security-badge {
+                font-size: 0.75rem;
+                padding: 0.375rem 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 0.75rem;
+                gap: 0.75rem;
+            }
+            
+            .hero-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.8rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .hero-section {
+                padding: 1rem 0;
+                margin-bottom: 0.75rem;
+            }
+            
+            .search-card {
+                padding: 0.75rem;
+                margin: 0;
+                border-radius: 10px;
+            }
+            
+            .container {
+                padding: 0 0.5rem;
+                margin: 1rem auto;
+            }
+            
+            .info-section {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                margin-top: 0.75rem;
+                gap: 0.5rem;
+                padding: 0 0.25rem;
+            }
+            
+            .info-card, .contact-card {
+                padding: 0.5rem;
+                margin: 0;
+                border-radius: 8px;
+            }
+            
+            .info-header h3, .contact-header h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .info-content p, .contact-content p {
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.3;
+            }
+            
+            .features-grid {
+                gap: 0.375rem;
+            }
+            
+            .feature-item {
+                padding: 0.375rem;
+                gap: 0.375rem;
+            }
+            
+            .feature-item i {
+                font-size: 0.9rem;
+                min-width: 16px;
+            }
+            
+            .feature-item h4 {
+                font-size: 0.85rem;
+                margin-bottom: 0.125rem;
+            }
+            
+            .feature-item p {
+                font-size: 0.75rem;
+                line-height: 1.2;
+            }
+            
+            .contact-info {
+                padding: 0.375rem 0.5rem;
+                border-radius: 4px;
+            }
+            
+            .contact-info a {
+                font-size: 0.8rem;
+            }
+            
+            .brand-text {
+                font-size: 20px;
+            }
+            
+            .logo {
+                width: 38px;
+                height: 38px;
+            }
+            
+            .lang-btn {
+                padding: 0.4rem 0.6rem !important;
+                font-size: 0.75rem !important;
+                min-width: 32px;
+            }
+            
+            .security-badge {
+                font-size: 0.7rem;
+                padding: 0.375rem 0.5rem;
+            }
+        }
+        
+        /* Security badges */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Information Section */
+        .info-section {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .info-card, .contact-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover, .contact-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+        }
+        
+        .info-header, .contact-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            color: #60a5fa;
+        }
+        
+        .info-header i, .contact-header i {
+            font-size: 1.5rem;
+        }
+        
+        .info-header h3, .contact-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .info-content p, .contact-content p {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
+        .feature-item i {
+            font-size: 1.5rem;
+            color: #60a5fa;
+            margin-top: 0.25rem;
+        }
+        
+        .feature-item h4 {
+            color: #e2e8f0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-item p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-info:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
+        .contact-info i {
+            color: #60a5fa;
+            font-size: 1.25rem;
+        }
+        
+        .contact-info a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .contact-info a:hover {
+            color: #93c5fd;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <a href="/" class="logo-link">
+                    <div class="logo">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="brand-text">takedow.email</div>
+                </a>
+            </div>
+            <div class="language-selector">
+                <span style="color: #64748b; font-size: 14px; margin-right: 0.5rem;">{{ get_text('language') }}:</span>
+                <a href="/set_language/en" class="lang-btn {% if current_lang == 'en' %}active{% endif %}">EN</a>
+                <a href="/set_language/tr" class="lang-btn {% if current_lang == 'tr' %}active{% endif %}">TR</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">
+                Phishing Domain Reporter
+            </h1>
+            <p class="hero-subtitle">{{ get_text('subtitle') }}</p>
+            <div class="security-badge">
+                <i class="fas fa-envelope"></i>
+                Find Abuse Contacts
+            </div>
+        </div>
+        
+        <div class="search-card">
+            <form class="search-form" id="searchForm">
+                <input 
+                    type="text" 
+                    class="domain-input" 
+                    id="domainInput" 
+                    placeholder="{{ get_text('search_placeholder') }}"
+                    required
+                >
+                <button type="submit" class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                    {{ get_text('search_btn') }}
+                </button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner"></i>
+                {{ get_text('loading') }}
+            </div>
+            
+            <div class="error" id="error"></div>
+            
+            <div class="results" id="results"></div>
+        </div>
+        
+        <!-- Information Section -->
+        <div class="info-section">
+            <div class="info-card">
+                <div class="info-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>{{ get_text('how_it_works') }}</h3>
+                </div>
+                <div class="info-content">
+                    <p>{{ get_text('how_it_works_desc') }}</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-search"></i>
+                            <div>
+                                <h4>{{ get_text('domain_analysis') }}</h4>
+                                <p>{{ get_text('domain_analysis_desc') }}</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>{{ get_text('abuse_contacts_feature') }}</h4>
+                                <p>{{ get_text('abuse_contacts_desc') }}</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-paper-plane"></i>
+                            <div>
+                                <h4>{{ get_text('direct_reporting') }}</h4>
+                                <p>{{ get_text('direct_reporting_desc') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-header">
+                    <i class="fas fa-headset"></i>
+                    <h3>{{ get_text('need_help') }}</h3>
+                </div>
+                <div class="contact-content">
+                    <p>{{ get_text('need_help_desc') }}</p>
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:support@takedow.email">support@takedow.email</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>{{ get_text('footer') }}</p>
+    </footer>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const domain = document.getElementById('domainInput').value.trim();
+            if (!domain) return;
+            
+            // UI state updates
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('searchBtn').disabled = true;
+            
+            // Hide info section when analyzing
+            const infoSection = document.querySelector('.info-section');
+            if (infoSection) {
+                infoSection.style.display = 'none';
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('domain', domain);
+                
+                const response = await fetch('/lookup', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Unknown error occurred');
+                }
+                
+                displayResults(data);
+                
+            } catch (error) {
+                document.getElementById('error').innerHTML = `<i class="fas fa-exclamation-triangle"></i> <strong>Error:</strong> ${error.message}`;
+                document.getElementById('error').style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('searchBtn').disabled = false;
+            }
+        });
+        
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const lang = '{{ current_lang }}';
+            
+            let html = `
+                <div class="result-card">
+                    <div class="result-title">
+                        <i class="fas fa-info-circle"></i>
+                        {{ get_text('domain_info') }}
+                    </div>
+                    <div class="domain-info">
+                        <div class="info-item">
+                            <div class="info-label">{{ get_text('domain') }}</div>
+                            <div class="info-value">${data.domain}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">{{ get_text('ip_address') }}</div>
+                            <div class="info-value">${data.ip || 'Not Found'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">{{ get_text('found_contacts') }}</div>
+                            <div class="info-value">${data.all_abuse_emails.length}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            if (data.all_abuse_emails && data.all_abuse_emails.length > 0) {
+                html += `
+                    <div class="result-card">
+                        <div class="abuse-emails">
+                            <h3>
+                                <i class="fas fa-envelope"></i>
+                                {{ get_text('abuse_contacts') }}
+                            </h3>
+                            <p class="abuse-info">
+                                {{ get_text('abuse_info') }}
+                            </p>
+                            <div class="email-list">
+                `;
+                
+                data.all_abuse_emails.forEach(email => {
+                    const mailtoLink = data.email_template.mailto_link.replace(
+                        data.all_abuse_emails.join(';'), 
+                        email
+                    );
+                    html += `
+                        <div class="email-item">
+                            <span class="email-address">${email}</span>
+                            <a href="${mailtoLink}" class="email-btn" target="_blank">
+                                <i class="fas fa-paper-plane"></i>
+                                Send Report
+                            </a>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                            </div>
+                            <div class="bulk-report">
+                                <h4>
+                                    <i class="fas fa-broadcast-tower"></i>
+                                    {{ get_text('bulk_report') }}
+                                </h4>
+                                <p style="margin-bottom: 1rem; color: #94a3b8;">{{ get_text('bulk_report_info') }}</p>
+                                <a href="${data.email_template.mailto_link}" class="bulk-btn" target="_blank">
+                                    <i class="fas fa-paper-plane"></i>
+                                    {{ get_text('send_to_all') }} (${data.all_abuse_emails.length} addresses)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="result-card">
+                        <div class="result-title">
+                            <i class="fas fa-exclamation-triangle" style="color: #f59e0b;"></i>
+                            {{ get_text('no_abuse_found') }}
+                        </div>
+                        <p style="color: #94a3b8;">{{ get_text('manual_contact') }}</p>
+                    </div>
+                `;
+            }
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

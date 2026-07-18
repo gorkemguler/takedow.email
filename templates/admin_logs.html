@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ get_text('admin_title') }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-link:hover {
+            transform: translateY(-1px);
+        }
+        
+        .logo-link:hover .logo {
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+        }
+        
+        .logo-link:hover .brand-text {
+            color: #fca5a5;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .brand-text {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .admin-badge {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .lang-btn.active,
+        .lang-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover {
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Controls Section */
+        .controls-section {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .search-input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            color: #64748b;
+            z-index: 1;
+        }
+
+        .search-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            min-width: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .search-btn, .clear-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #64748b, #475569);
+        }
+
+        .search-btn:hover, .clear-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .action-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .per-page-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #cbd5e1;
+        }
+
+        .per-page-selector select {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .export-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Pagination */
+        .pagination-section {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pagination-info {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #cbd5e1;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .pagination-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .page-numbers {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .page-number {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #cbd5e1;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .page-number:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .page-number.active {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        .page-ellipsis {
+            color: #64748b;
+            padding: 0.5rem;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .page-subtitle {
+            color: #94a3b8;
+            font-size: 1.125rem;
+        }
+        
+        /* Stats cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #94a3b8;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        /* Table section */
+        .table-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .table-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
+        .table-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fca5a5;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        tr:hover td {
+            background: rgba(239, 68, 68, 0.05);
+        }
+        
+        .domain-cell {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-weight: 700;
+            color: #fca5a5;
+            font-size: 0.9rem;
+        }
+        
+        .ip-cell {
+            font-family: 'Monaco', 'Menlo', monospace;
+            color: #60a5fa;
+            font-size: 0.9rem;
+        }
+        
+        .time-cell {
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+        
+        .abuse-cell {
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #34d399;
+            font-size: 0.875rem;
+        }
+        
+        .no-data {
+            text-align: center;
+            color: #64748b;
+            padding: 4rem 2rem;
+            font-style: italic;
+        }
+        
+        .no-data i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(239, 68, 68, 0.2);
+            color: #64748b;
+        }
+        
+        .security-notice {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .header-content {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-card {
+                margin: 0 -1rem;
+                border-radius: 0;
+            }
+            
+            th, td {
+                padding: 0.75rem 1rem;
+            }
+            
+            .brand-text {
+                font-size: 24px;
+            }
+        }
+        
+        /* Status indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .status-threat {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <a href="/" class="logo-link" onclick="window.location.href='/'; return false;">
+                    <div class="logo">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="brand-text">takedow.email</div>
+                </a>
+                <div class="admin-badge">
+                    <i class="fas fa-user-shield"></i>
+                    {{ get_text('admin_panel') }}
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="/security-dashboard-x9k2m8p7q4w1/stats" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    Statistics
+                </a>
+                <div class="language-selector">
+                    <span style="color: #64748b; font-size: 14px; margin-right: 0.5rem;">{{ get_text('language') }}:</span>
+                    <a href="/set_language/en" class="lang-btn {% if current_lang == 'en' %}active{% endif %}">EN</a>
+                    <a href="/set_language/tr" class="lang-btn {% if current_lang == 'tr' %}active{% endif %}">TR</a>
+                </div>
+                <a href="/" class="back-btn" onclick="goHome(); return false;">
+                    <i class="fas fa-arrow-left"></i>
+                    {{ get_text('back_to_home') }}
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-list" style="color: #ef4444;"></i>
+                Domain Query Logs
+            </h1>
+            <p class="page-subtitle">{{ get_text('admin_title') }}</p>
+        </div>
+
+        <!-- Filters and Controls -->
+        <div class="controls-section">
+            <div class="search-controls">
+                <form method="GET" class="search-form">
+                    <div class="search-input-group">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" name="search" value="{{ search or '' }}" 
+                               placeholder="Search domains, IPs, or abuse contacts..." 
+                               class="search-input">
+                        <input type="hidden" name="per_page" value="{{ pagination.per_page }}">
+                    </div>
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                        Search
+                    </button>
+                    {% if search %}
+                    <a href="/security-dashboard-x9k2m8p7q4w1" class="clear-btn">
+                        <i class="fas fa-times"></i>
+                        Clear
+                    </a>
+                    {% endif %}
+                </form>
+            </div>
+            
+            <div class="action-controls">
+                <div class="per-page-selector">
+                    <label for="per_page">Show:</label>
+                    <select id="per_page" onchange="changePerPage(this.value)">
+                        <option value="20" {% if pagination.per_page == 20 %}selected{% endif %}>20</option>
+                        <option value="50" {% if pagination.per_page == 50 %}selected{% endif %}>50</option>
+                        <option value="100" {% if pagination.per_page == 100 %}selected{% endif %}>100</option>
+                    </select>
+                </div>
+                
+                <div class="export-controls">
+                    <button onclick="exportData('csv')" class="export-btn">
+                        <i class="fas fa-file-csv"></i>
+                        Export CSV
+                    </button>
+                    <button onclick="exportData('json')" class="export-btn">
+                        <i class="fas fa-file-code"></i>
+                        Export JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ logs|length }}</div>
+                <div class="stat-label">
+                    <i class="fas fa-search"></i>
+                    {{ get_text('recent_queries') }}
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ logs|length }}</div>
+                <div class="stat-label">
+                    <i class="fas fa-globe"></i>
+                    {{ get_text('unique_domains') }}
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">
+                    <i class="fas fa-eye"></i>
+                    Monitoring Status
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-card">
+            <div class="table-header">
+                <div class="table-title">
+                    <i class="fas fa-list"></i>
+                    Query History
+                </div>
+            </div>
+            <div class="table-container">
+                {% if logs %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ get_text('domain') }}</th>
+                            <th>{{ get_text('query_time') }}</th>
+                            <th>{{ get_text('ip_address') }}</th>
+                            <th>{{ get_text('found_contacts') }}</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td class="domain-cell">{{ log[0] }}</td>
+                            <td class="time-cell">{{ log[1] }}</td>
+                            <td class="ip-cell">{{ log[2] or 'N/A' }}</td>
+                            <td class="abuse-cell" title="{{ log[3] }}">{{ log[3] or 'No contacts found' }}</td>
+                            <td>
+                                {% if log[3] and log[3] != 'None' and log[3] != '[]' %}
+                                <span class="status-indicator status-active">
+                                    <i class="fas fa-check-circle"></i>
+                                    Contacts Found
+                                </span>
+                                {% else %}
+                                <span class="status-indicator status-threat">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    No Contacts
+                                </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="no-data">
+                    <i class="fas fa-database"></i>
+                    <h3>{{ get_text('no_data') }}</h3>
+                    <p>Start analyzing domains to see threat intelligence data here.</p>
+                </div>
+                {% endif %}
+                
+                <!-- Pagination -->
+                {% if pagination.total_pages > 1 %}
+                <div class="pagination-section">
+                    <div class="pagination-info">
+                        Showing {{ ((pagination.page - 1) * pagination.per_page + 1) }} to {{ (pagination.page * pagination.per_page if pagination.page * pagination.per_page < pagination.total_count else pagination.total_count) }} of {{ pagination.total_count }} entries
+                    </div>
+                    
+                    <div class="pagination-controls">
+                        {% if pagination.has_prev %}
+                        <a href="?page={{ pagination.prev_num }}&per_page={{ pagination.per_page }}{% if search %}&search={{ search }}{% endif %}" 
+                           class="pagination-btn">
+                            <i class="fas fa-chevron-left"></i>
+                            Previous
+                        </a>
+                        {% endif %}
+                        
+                        <div class="page-numbers">
+                            {% set start_page = pagination.page - 2 if pagination.page > 2 else 1 %}
+                            {% set end_page = pagination.page + 2 if pagination.page + 2 < pagination.total_pages else pagination.total_pages %}
+                            
+                            {% if start_page > 1 %}
+                            <a href="?page=1&per_page={{ pagination.per_page }}{% if search %}&search={{ search }}{% endif %}" 
+                               class="page-number">1</a>
+                            {% if start_page > 2 %}
+                            <span class="page-ellipsis">...</span>
+                            {% endif %}
+                            {% endif %}
+                            
+                            {% for page_num in range(start_page, end_page + 1) %}
+                            <a href="?page={{ page_num }}&per_page={{ pagination.per_page }}{% if search %}&search={{ search }}{% endif %}" 
+                               class="page-number {% if page_num == pagination.page %}active{% endif %}">{{ page_num }}</a>
+                            {% endfor %}
+                            
+                            {% if end_page < pagination.total_pages %}
+                            {% if end_page < pagination.total_pages - 1 %}
+                            <span class="page-ellipsis">...</span>
+                            {% endif %}
+                            <a href="?page={{ pagination.total_pages }}&per_page={{ pagination.per_page }}{% if search %}&search={{ search }}{% endif %}" 
+                               class="page-number">{{ pagination.total_pages }}</a>
+                            {% endif %}
+                        </div>
+                        
+                        {% if pagination.has_next %}
+                        <a href="?page={{ pagination.next_num }}&per_page={{ pagination.per_page }}{% if search %}&search={{ search }}{% endif %}" 
+                           class="pagination-btn">
+                            Next
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="security-notice">
+                <i class="fas fa-lock"></i>
+                {{ get_text('security_note') }}
+            </div>
+            <p style="margin-top: 1rem;">{{ get_text('footer') }}</p>
+        </div>
+    </div>
+
+    <script>
+        function changePerPage(perPage) {
+            const url = new URL(window.location);
+            url.searchParams.set('per_page', perPage);
+            url.searchParams.set('page', '1'); // Reset to first page
+            window.location.href = url.toString();
+        }
+
+        function exportData(format) {
+            const url = new URL('/security-dashboard-x9k2m8p7q4w1/export', window.location.origin);
+            url.searchParams.set('format', format);
+            
+            // Include current search if any
+            const search = document.querySelector('input[name="search"]').value;
+            if (search.trim()) {
+                url.searchParams.set('search', search.trim());
+            }
+            
+            // Open in new window to trigger download
+            window.open(url.toString(), '_blank');
+        }
+
+        // Auto-submit search form on Enter
+        document.querySelector('.search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.closest('form').submit();
+            }
+        });
+
+        // Clean home navigation
+        function goHome() {
+            window.location.href = '/';
+            return false;
+        }
+
+        // Add clean home navigation to logo
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoLink = document.querySelector('.logo-link');
+            if (logoLink) {
+                logoLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    goHome();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

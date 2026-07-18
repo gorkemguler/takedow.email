@@ -1,0 +1,13 @@
+<svg width="500" height="200" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield background -->
+  <path d="M50 30 L50 30 Q50 20 60 20 L100 20 Q110 20 110 30 L110 120 Q110 140 90 150 L80 155 Q75 157 70 155 L60 150 Q50 140 50 120 Z" fill="#1e40af" stroke="#1e40af" stroke-width="2"/>
+  
+  <!-- Mail icon -->
+  <rect x="65" y="50" width="30" height="20" fill="white" rx="2"/>
+  <path d="M65 52 L80 62 L95 52" stroke="#1e40af" stroke-width="1.5" fill="none"/>
+  <path d="M67 68 L78 60 L89 68" stroke="#1e40af" stroke-width="1.5" fill="none"/>
+  
+  <!-- Text -->
+  <text x="130" y="80" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1e3a8a">Takedown</text>
+  <text x="130" y="120" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#1e3a8a">Email</text>
+</svg>

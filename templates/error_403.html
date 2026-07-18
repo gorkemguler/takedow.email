@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - Access Forbidden | takedow.email</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/favicon.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .error-container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        .error-icon {
+            font-size: 8rem;
+            color: #f59e0b;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .error-code {
+            font-size: 6rem;
+            font-weight: 800;
+            color: #f59e0b;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .error-message {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .security-notice {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .security-notice h3 {
+            color: #f59e0b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .security-notice p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(30, 41, 59, 0.8);
+        }
+
+        .logo-section {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 4rem;
+            }
+
+            .error-title {
+                font-size: 2rem;
+            }
+
+            .error-message {
+                font-size: 1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .logo-section {
+                position: relative;
+                top: 0;
+                left: 0;
+                justify-content: center;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-section">
+        <div class="logo">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="brand-text">takedow.email</div>
+    </div>
+
+    <div class="error-container">
+        <div class="error-icon">
+            <i class="fas fa-lock"></i>
+        </div>
+        
+        <div class="error-code">403</div>
+        
+        <h1 class="error-title">Access Forbidden</h1>
+        
+        <p class="error-message">
+            You don't have permission to access this resource.
+        </p>
+
+        <div class="security-notice">
+            <h3>
+                <i class="fas fa-shield-alt"></i>
+                Security Notice
+            </h3>
+            <p>This area is restricted to authorized personnel only.</p>
+            <p>If you believe you should have access, please contact the administrator.</p>
+            <p>All access attempts are logged for security purposes.</p>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-home"></i>
+                Go Home
+            </a>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Go Back
+            </a>
+        </div>
+    </div>
+</body>
+</html>
